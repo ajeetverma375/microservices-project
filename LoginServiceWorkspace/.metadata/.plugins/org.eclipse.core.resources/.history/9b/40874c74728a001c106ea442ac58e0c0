@@ -1,0 +1,20 @@
+package com.epam.libraryservice.service;
+
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Service;
+
+import com.epam.libraryservice.entity.UserDTO;
+import com.epam.libraryservice.feign.UserFeignClient;
+@Service
+public class FeignService {
+
+	public ResponseEntity<List<UserDTO>> getAllUsers() {
+		UserFeignClient userFeignClient;
+		ResponseEntity<List<UserDTO>> allUser = userFeignClient.getAllUser();
+		return allUser;
+	}
+
+}

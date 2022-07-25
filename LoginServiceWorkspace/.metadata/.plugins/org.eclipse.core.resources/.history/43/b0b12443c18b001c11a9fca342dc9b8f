@@ -1,0 +1,76 @@
+package com.epam.libraryservice;
+
+import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.when;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
+
+import com.epam.libraryservice.entity.BookEntity;
+import com.epam.libraryservice.entity.LibraryEntity;
+import com.epam.libraryservice.entity.UserDTO;
+import com.epam.libraryservice.entity.UserEntity;
+import com.epam.libraryservice.feign.BookFeignClient;
+import com.epam.libraryservice.feign.UserFeignClient;
+import com.epam.libraryservice.repository.LibraryRepository;
+import com.epam.libraryservice.service.FeignService;
+import com.epam.libraryservice.service.LibraryService;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+@ExtendWith(MockitoExtension.class)
+@ExtendWith(SpringExtension.class)
+ class LibraryServiceTest {
+
+	@InjectMocks
+	LibraryService libraryService;
+	@MockBean
+	LibraryRepository libraryRepository;
+	@MockBean
+	BookFeignClient bookFeignClient;
+	@MockBean
+	UserFeignClient userFeignClient;
+	@MockBean
+	FeignService feignService;
+	ObjectMapper objectMapper;
+	UserEntity userEntity;
+	UserDTO user = new UserDTO("Ajeet@123", "ajeet@gmail.com", "ajeet");
+	BookEntity bookEntity = new BookEntity(1, "ajeet", "ajeet", "ajeet");
+	List<LibraryEntity> libraryList = new ArrayList<>();
+	ResponseEntity<UserDTO> userResponse = new ResponseEntity<>(user, HttpStatus.OK);
+	ResponseEntity<BookEntity> bookResponse = new ResponseEntity<>(bookEntity, HttpStatus.OK);
+
+	@BeforeEach
+	public void setUp() {
+		userEntity = new UserEntity("Ajeet@123", "ajeet@gmail.com", "ajeet");
+		objectMapper = new ObjectMapper();
+		libraryList.add(new LibraryEntity(1, "Ajeet@123", 3));
+		libraryList.add(new LibraryEntity(2, "Akash@123", 2));
+	}
+
+	@Test
+	void testIssueBookToUser() {
+		String username = "Ajeet@123";
+		int bookId = 1;
+		when(userFeignClient.getUser(username)).thenReturn(userResponse);
+		when(bookFeignClient.getBook(bookId)).thenReturn(bookResponse);
+		Assertions.assertEquals("book issued successfully to: " + username, libraryService.issueBookToUser(username, bookId));
+	}
+	
+	void getAllRecordsTest()
+	{
+		when(libraryRepository.findAll()).thenReturn(libraryList)
+		 libraryRepository.findAll();
+	}
+
+}

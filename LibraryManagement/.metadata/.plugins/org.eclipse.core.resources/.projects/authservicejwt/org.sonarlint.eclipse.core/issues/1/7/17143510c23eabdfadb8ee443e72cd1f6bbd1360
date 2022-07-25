@@ -1,0 +1,10 @@
+
+g	java:S125""<This block of commented-out lines of code should be removed.(¤ê±ÎH€RMAJORZ
+CODE_SMELL
+
+java:S1128"]Remove this unused import 'org.springframework.security.core.userdetails.UserDetailsService'.(¶…¥à8´¦†ñ/HüRMINORZ
+CODE_SMELL
+u
+java:S5344 ">Don't use the default "PasswordEncoder" relying on plain-text.(ù–È þÿÿÿÿHûRCRITICALZVULNERABILITY
+l	java:S125"<This block of commented-out lines of code should be removed.(»Ô¢üÿÿÿÿHþRMAJORZ
+CODE_SMELL

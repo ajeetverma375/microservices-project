@@ -1,0 +1,120 @@
+package com.epam.libraryservice.exceptions;
+
+import java.util.Date;
+import java.util.Map;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.HttpRequestMethodNotSupportedException;
+import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.context.request.WebRequest;
+import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import feign.FeignException;
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
+@RestControllerAdvice
+public class CustomExceptionHandler extends ResponseEntityExceptionHandler {
+
+//	@Override
+//	protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException exception,
+//			HttpHeaders headers, HttpStatus status, WebRequest request) {
+//		Map<String, String> errors = new HashMap<>();
+//		exception.getBindingResult().getAllErrors().forEach(error -> {
+//			String fieldName = ((FieldError) error).getField();
+//			String message = error.getDefaultMessage();
+//			errors.put(fieldName, message);
+//		});
+//		ErrorResponse errorResponse = new ErrorResponse(new Date(), errors.toString(), request.getDescription(false));
+//		return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
+//	}
+
+	@Override
+	protected ResponseEntity<Object> handleHttpRequestMethodNotSupported(HttpRequestMethodNotSupportedException ex,
+			HttpHeaders headers, HttpStatus status, WebRequest request) {
+		return new ResponseEntity<>("Please change your request", HttpStatus.NOT_FOUND);
+	}
+
+	@ExceptionHandler(FeignException.class)
+	public ResponseEntity<ErrorResponse> handleFeignException(FeignException exception, WebRequest request)
+			throws JsonProcessingException {
+		ObjectMapper object = new ObjectMapper();
+		@SuppressWarnings("unchecked")
+		Map<String, String> value = object.readValue(exception.contentUTF8(), Map.class);
+		ErrorResponse errorResponse = new ErrorResponse(new Date(), value.get("message"),
+				request.getDescription(false));
+		return new ResponseEntity<>(errorResponse, HttpStatus.valueOf(exception.status()));
+	}
+
+	@ExceptionHandler(BookAlreadyExistsException.class)
+	public ResponseEntity<ErrorResponse> handleBookAlreadyExistsException(BookAlreadyExistsException exception,
+			WebRequest request) {
+		log.error("Account Alreay Exists");
+		ErrorResponse errorResponse = new ErrorResponse(new Date(), exception.getMessage(),
+				request.getDescription(false));
+		return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
+	}
+
+	@ExceptionHandler(BookCantBeIssuedException.class)
+	public ResponseEntity<ErrorResponse> handleBookCantBeIssuedException(BookCantBeIssuedException exception,
+			WebRequest request) {
+		log.error("User Does not exists ");
+		ErrorResponse errorResponse = new ErrorResponse(new Date(), exception.getMessage(),
+				request.getDescription(false));
+		return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
+	}
+
+	@ExceptionHandler(BookDoesNotExists.class)
+	public ResponseEntity<ErrorResponse> handleBookDoesNotExists(BookDoesNotExists exception, WebRequest request) {
+		log.error("User Does not exists ");
+		ErrorResponse errorResponse = new ErrorResponse(new Date(), exception.getMessage(),
+				request.getDescription(false));
+		return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
+	}
+
+	@ExceptionHandler(NoBookIssuedException.class)
+	public ResponseEntity<ErrorResponse> handleNoBookIssuedException(NoBookIssuedException exception,
+			WebRequest request) {
+		log.error("User Does not exists ");
+		ErrorResponse errorResponse = new ErrorResponse(new Date(), exception.getMessage(),
+				request.getDescription(false));
+		return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
+	}
+
+	@ExceptionHandler(RecordAlreadyExistsException.class)
+	public ResponseEntity<ErrorResponse> handleRecordAlreadyExistsException(RecordAlreadyExistsException exception,
+			WebRequest request) {
+		log.error("User Does not exists ");
+		ErrorResponse errorResponse = new ErrorResponse(new Date(), exception.getMessage(),
+				request.getDescription(false));
+		return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
+	}
+
+	@ExceptionHandler(RecordNotFoundException.class)
+	public ResponseEntity<ErrorResponse> handleRecordNotFoundException(RecordNotFoundException exception,
+			WebRequest request) {
+		log.error("User Does not exists ");
+		ErrorResponse errorResponse = new ErrorResponse(new Date(), exception.getMessage(),
+				request.getDescription(false));
+		return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
+	}
+
+	@ExceptionHandler(UserDoesNotExists.class)
+	public ResponseEntity<ErrorResponse> handleUserDoesNotExists(UserDoesNotExists exception, WebRequest request) {
+		log.error("User Does not exists ");
+		ErrorResponse errorResponse = new ErrorResponse(new Date(), exception.getMessage(),
+				request.getDescription(false));
+		return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
+	}
+
+	@ExceptionHandler(Exception.class)
+	public ResponseEntity<ErrorResponse> handleOtherException(Exception exception, WebRequest request) {
+		log.error("\n Exception class \n");
+		ErrorResponse errorResponse = new ErrorResponse(new Date(), exception.getMessage(),
+				request.getDescription(false));
+		return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
+	}
+}

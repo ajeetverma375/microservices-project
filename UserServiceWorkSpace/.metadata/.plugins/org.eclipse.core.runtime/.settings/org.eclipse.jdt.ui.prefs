@@ -1,0 +1,8 @@
+content_assist_lru_history=<?xml version\="1.0" encoding\="UTF-8" standalone\="no"?><history maxLHS\="100" maxRHS\="10"><lhs name\="com.epam.userservice.entity.UserEntity"><rhs name\="com.epam.userservice.entity.UserEntity"/></lhs><lhs name\="java.util.Collection"><rhs name\="java.util.ArrayList"/></lhs><lhs name\="java.lang.Iterable"><rhs name\="java.util.ArrayList"/><rhs name\="org.springframework.plugin.core.SimplePluginRegistry"/></lhs><lhs name\="java.util.List"><rhs name\="java.util.ArrayList"/></lhs><lhs name\="org.springframework.hateoas.client.LinkDiscoverers"><rhs name\="org.springframework.hateoas.client.LinkDiscoverers"/></lhs><lhs name\="org.springframework.plugin.core.PluginRegistry"><rhs name\="org.springframework.plugin.core.SimplePluginRegistry"/></lhs><lhs name\="org.springframework.hateoas.RepresentationModel"><rhs name\="com.epam.userservice.entity.MessageEntity"/><rhs name\="com.epam.userservice.entity.UserEntity"/></lhs><lhs name\="com.epam.userservice.entity.MessageEntity"><rhs name\="com.epam.userservice.entity.MessageEntity"/></lhs><lhs name\="com.epam.userservice.service.UserService"><rhs name\="com.epam.userservice.service.UserServcieImpl"/></lhs><lhs name\="com.epam.userservice.service.UserServcieImpl"><rhs name\="com.epam.userservice.service.UserServcieImpl"/></lhs></history>
+content_assist_number_of_computers=19
+eclipse.preferences.version=1
+org.eclipse.jdt.ui.formatterprofiles.version=21
+spelling_locale_initialized=true
+typefilter_migrated_2=true
+useAnnotationsPrefPage=true
+useQuickDiffPrefPage=true

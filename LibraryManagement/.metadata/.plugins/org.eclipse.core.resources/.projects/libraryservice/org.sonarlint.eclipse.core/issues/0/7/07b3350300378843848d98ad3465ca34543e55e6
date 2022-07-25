@@ -1,0 +1,32 @@
+
+
+java:S1128"PRemove this unused import 'org.springframework.web.bind.annotation.PostMapping'.(äƒà°ùÿÿÿÿH‚RMINORZ
+CODE_SMELL
+f	java:S125#"<This block of commented-out lines of code should be removed.(ü¦Œ<H„RMAJORZ
+CODE_SMELL
+…
+java:S1128"RRemove this unused import 'org.springframework.web.bind.annotation.RequestHeader'.(ØÙë™8Å·û²ò/H…RMINORZ
+CODE_SMELL
+
+java:S14880"\Immediately return this expression instead of assigning it to the temporary variable "user".(šĞÁøÿÿÿÿH‡RMINORZ
+CODE_SMELL
+k
+java:S1128"3Remove this unused import 'javax.validation.Valid'.(æ¤ñ÷úÿÿÿÿ8Å·û²ò/HŠRMINORZ
+CODE_SMELL
+l	java:S125+"<This block of commented-out lines of code should be removed.(™÷‹øÿÿÿÿHŒRMAJORZ
+CODE_SMELL
+g	java:S1251"<This block of commented-out lines of code should be removed.(Áƒ­õHRMAJORZ
+CODE_SMELL
+k	java:S106S"9Replace this use of System.out or System.err by a logger.(½œäŸ8ï€³ò/HRMAJORZ
+CODE_SMELL
+ˆ
+java:S1128"PRemove this unused import 'org.springframework.web.bind.annotation.RequestBody'.(â­½Àıÿÿÿÿ8Å·û²ò/HRMINORZ
+CODE_SMELL
+i
+java:S1128"=Remove this unused import 'org.springframework.hateoas.Link'.(ò‘¶ÄH‘RMINORZ
+CODE_SMELL
+p	java:S106R"9Replace this use of System.out or System.err by a logger.(™Îö”úÿÿÿÿ8¨é²ò/H“RMAJORZ
+CODE_SMELL
+‹
+java:S1488*"_Immediately return this expression instead of assigning it to the temporary variable "allUser".(–¦ä§H”RMINORZ
+CODE_SMELL

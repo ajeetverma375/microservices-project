@@ -1,0 +1,61 @@
+package com.epam.libraryservice;
+
+import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.mockito.stubbing.OngoingStubbing;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
+import org.springframework.test.web.servlet.MockMvc;
+
+import com.epam.libraryservice.entity.UserDTO;
+import com.epam.libraryservice.entity.UserEntity;
+import com.epam.libraryservice.service.FeignService;
+import com.epam.libraryservice.service.LibraryService;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+@SpringBootTest
+@AutoConfigureMockMvc
+class LibraryControllerTest {
+
+	@MockBean
+	FeignService feignService;
+	@MockBean
+	LibraryService libraryService;
+	@Autowired
+	MockMvc mockMvc;
+	
+	ObjectMapper objectMapper;
+	UserEntity userEntity;
+	List<UserEntity> userList = new ArrayList<>();
+
+	@BeforeEach
+	public void setUp() {
+		
+		userEntity = new UserEntity("Ajeet@123", "ajeet@gmail.com", "ajeet");
+		objectMapper = new ObjectMapper();
+		userList.add(new UserEntity("Ajeet@123", "ajeet@gmail.com", "ajeet"));
+		userList.add(new UserEntity("Akash@123", "Akash@gmail.com", "Akash"));
+	}
+	
+	@Test
+	void addUserTest() throws Exception {
+		UserDTO user = new UserDTO("Ajeet@123", "ajeet@gmail.com", "ajeet");
+		ResponseEntity<UserDTO> userResponse = new ResponseEntity<>(user, HttpStatus.OK);
+		when( feignService.addUser(user)).thenReturn(userResponse);
+		ObjectMapper objectMapper = new ObjectMapper();
+		String json = objectMapper.writeValueAsString(user);
+		mockMvc.perform(post("/library/users").contentType(MediaType.APPLICATION_JSON_VALUE)).andExpect(status().isOk());
+	}
+}

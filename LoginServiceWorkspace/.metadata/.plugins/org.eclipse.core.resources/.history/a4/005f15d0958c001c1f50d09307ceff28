@@ -1,0 +1,38 @@
+package com.epam.libraryservice;
+
+import static org.mockito.Mockito.when;
+
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
+
+import com.epam.libraryservice.entity.UserDTO;
+import com.epam.libraryservice.feign.BookFeignClient;
+import com.epam.libraryservice.feign.UserFeignClient;
+import com.epam.libraryservice.service.FeignService;
+
+@ExtendWith(MockitoExtension.class)
+@ExtendWith(SpringExtension.class)
+public class FeignServiceTest {
+
+	@InjectMocks
+	FeignService feignService;
+	@MockBean
+	UserFeignClient userFeignClient;
+	@MockBean
+	BookFeignClient bookFeignClient;
+	
+	@Test
+	void addUser() {
+		UserDTO user = new UserDTO("Ajeet@123", "ajeet@gmail.com", "ajeet");
+		ResponseEntity<UserDTO> userResponse = new ResponseEntity<>(user, HttpStatus.OK);
+		when(userFeignClient.addUser(user)).thenReturn(userResponse);
+		Assertions.assertEquals(userResponse, feignService.addUser(user));
+	}
+}

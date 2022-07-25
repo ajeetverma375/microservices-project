@@ -1,0 +1,17 @@
+package com.epam.libraryservice.utility;
+
+import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
+import org.springframework.stereotype.Service;
+
+import com.epam.libraryservice.controller.LibraryController;
+import com.epam.libraryservice.entity.UserDTO;
+
+@Service
+public class Link {
+
+	public Link getUserSelfLink(UserDTO user)
+	{
+		return WebMvcLinkBuilder.linkTo(LibraryController.class).slash("users").slash(user.getUserName()).withSelfRel();
+	}
+	
+}

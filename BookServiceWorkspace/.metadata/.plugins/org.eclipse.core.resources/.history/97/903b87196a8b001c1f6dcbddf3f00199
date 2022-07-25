@@ -1,0 +1,58 @@
+package com.epam.bookservice;
+
+import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.http.MediaType;
+import org.springframework.test.web.servlet.MockMvc;
+
+import com.epam.bookservice.entity.BookEntity;
+import com.epam.bookservice.repository.BookRepository;
+import com.epam.bookservice.service.BookService;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+@SpringBootTest
+@AutoConfigureMockMvc
+ class BookControllerTest {
+	@MockBean
+	BookRepository bookRepository;
+	@MockBean
+	BookService bookService;
+	@Autowired
+	MockMvc mockMvc;
+	ObjectMapper objectMapper;
+	BookEntity bookEntity;
+	List<BookEntity> bookList = new ArrayList<>();
+
+	@BeforeEach
+	public void setUp() {
+		bookEntity = new BookEntity(1, "ajeet", "ajeet", "ajeet");
+		objectMapper = new ObjectMapper();
+		bookList.add(new BookEntity(1, "ajeet", "ajeet", "ajeet"));
+		bookList.add(new BookEntity(2, "akash", "akash", "akash"));
+	}
+	
+	@Test
+	void getAllBookTest() throws Exception {
+		when(bookService.getAllBook()).thenReturn(bookList);
+		mockMvc.perform(get("/books").contentType(MediaType.APPLICATION_JSON_VALUE))
+				.andExpect(status().isOk());
+	}
+	
+
+	@Test
+	void getBookByBookIdTest() throws Exception {
+		when(bookService.getBookByBookId(1)).thenReturn(bookEntity);
+		mockMvc.perform(get("/books/1").content("1")).andExpect(status().isOk());
+	}
+}

@@ -1,0 +1,83 @@
+package com.epam.libraryservice;
+
+import static org.mockito.Mockito.doReturn;
+import static org.mockito.Mockito.when;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
+import com.epam.libraryservice.entity.BookEntity;
+import com.epam.libraryservice.entity.LibraryEntity;
+import com.epam.libraryservice.entity.UserDTO;
+import com.epam.libraryservice.exceptions.RecordNotFoundException;
+import com.epam.libraryservice.feign.BookFeignClient;
+import com.epam.libraryservice.feign.UserFeignClient;
+import com.epam.libraryservice.repository.LibraryRepository;
+import com.epam.libraryservice.service.FeignService;
+import com.epam.libraryservice.service.LibraryService;
+
+@ExtendWith(MockitoExtension.class)
+@ExtendWith(SpringExtension.class)
+class LibraryServiceTest {
+
+	@InjectMocks
+	LibraryService libraryService;
+	@MockBean
+	LibraryRepository libraryRepository;
+	@MockBean
+	BookFeignClient bookFeignClient;
+	@MockBean
+	UserFeignClient userFeignClient;
+	@MockBean
+	FeignService feignService;
+	UserDTO user = new UserDTO("Ajeet@123", "ajeet@gmail.com", "ajeet");
+
+	@Test
+	void testIssueBookToUser() {
+		String username = "Ajeet@123";
+		int bookId = 1;
+		BookEntity bookEntity = new BookEntity(1, "ajeet", "ajeet", "ajeet");
+		ResponseEntity<UserDTO> userResponse = new ResponseEntity<>(user, HttpStatus.OK);
+		ResponseEntity<BookEntity> bookResponse = new ResponseEntity<>(bookEntity, HttpStatus.OK);
+		when(userFeignClient.getUser(username)).thenReturn(userResponse);
+		when(bookFeignClient.getBook(bookId)).thenReturn(bookResponse);
+		Assertions.assertEquals("book issued successfully to: " + username,
+				libraryService.issueBookToUser(username, bookId));
+	}
+
+	@Test
+	void getAllRecordsTest() {
+		List<LibraryEntity> libraryList = new ArrayList<>();
+		libraryList.add(new LibraryEntity(1, "Ajeet@123", 3));
+		libraryList.add(new LibraryEntity(2, "Akash@123", 2));
+		when(libraryRepository.findAll()).thenReturn(libraryList);
+		Assertions.assertEquals(libraryList, libraryService.getAllRecords());
+	}
+
+	@Test
+	void deleteIssuedBookTest() {
+		String username = "Ajeet@123";
+		int bookId = 1;
+		doReturn(Optional.of(user)).when(libraryRepository).findByUsernameAndBookId(username, bookId);
+		when(libraryRepository.removeByUsernameAndBookId(username, bookId)).thenReturn(true);
+		Assertions.assertEquals(true, libraryService.deleteIssuedBook(username, bookId));
+	}
+
+	@Test
+	void deleteInvalidIssuedBookTest() {
+		String username = "Ajeet@123";
+		int bookId = 1;
+		doReturn(Optional.of(user)).when(libraryRepository).findByUsernameAndBookId(username, bookId);
+		when(libraryRepository.removeByUsernameAndBookId(username, bookId)).thenReturn(false);
+		Assertions.assertThrows(RecordNotFoundException.class, () -> libraryService.deleteIssuedBook("Akash@123", 2));
+	}
+
+}

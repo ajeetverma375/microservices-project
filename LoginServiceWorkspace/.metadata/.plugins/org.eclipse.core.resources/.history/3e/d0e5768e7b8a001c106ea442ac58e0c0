@@ -1,0 +1,38 @@
+package com.epam.libraryservice.service;
+
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Service;
+
+import com.epam.libraryservice.entity.UserDTO;
+import com.epam.libraryservice.feign.UserFeignClient;
+
+@Service
+public class FeignService {
+
+	@Autowired
+	UserFeignClient userFeignClient;
+	
+	public ResponseEntity<List<UserDTO>> getAllUsers() {
+		ResponseEntity<List<UserDTO>> allUser = userFeignClient.getAllUser();
+		return allUser;
+	}
+
+	public ResponseEntity<UserDTO> getUserByUserName(String username) {
+		ResponseEntity<UserDTO> user = userFeignClient.getUser(username);
+		return user;
+	}
+
+	public ResponseEntity<String> deleteUserByUserName(String username) {
+		ResponseEntity<String> deleteUser = userFeignClient.deleteUser(username);
+		return deleteUser;
+	}
+
+	public ResponseEntity<String> updateUser(String username, UserDTO userDTO) {
+           ResponseEntity<String> updateUser = userFeignClient.updateUser(username, userDTO);
+		return updateUser;
+	}
+
+}

@@ -1,0 +1,90 @@
+package com.epam.userservice;
+
+import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.http.MediaType;
+import org.springframework.test.web.servlet.MockMvc;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+@ExtendWith(MockitoExtension.class)
+public class UserControllerTest {
+	@MockBean
+	BookRepository bookRepository;
+	@MockBean
+	BookService bookService;
+	@Autowired
+	MockMvc mockMvc;
+	ObjectMapper objectMapper;
+	BookEntity bookEntity;
+	List<BookEntity> bookList = new ArrayList<>();
+
+	@BeforeEach
+	public void setUp() {
+		bookEntity = new BookEntity(1, "ajeet", "ajeet", "ajeet");
+		objectMapper = new ObjectMapper();
+		bookList.add(new BookEntity(1, "ajeet", "ajeet", "ajeet"));
+		bookList.add(new BookEntity(2, "akash", "akash", "akash"));
+	}
+	
+	@Test
+	void getAllBookTest() throws Exception {
+		when(bookService.getAllBook()).thenReturn(bookList);
+		mockMvc.perform(get("/books").contentType(MediaType.APPLICATION_JSON_VALUE))
+				.andExpect(status().isOk());
+	}
+	
+
+	@Test
+	void getBookByBookIdTest() throws Exception {
+		when(bookService.getBookByBookId(1)).thenReturn(bookEntity);
+		mockMvc.perform(get("/books/1").content("1")).andExpect(status().isOk());
+	}
+	
+	@Test
+	void addBookTest() throws Exception {
+		BookDTO book = new BookDTO(1, "ajeet", "ajeet", "ajeet");
+		when(bookService.addBook(book.getBook())).thenReturn(book.getBook());
+		ObjectMapper objectMapper=new ObjectMapper();
+		String json=objectMapper.writeValueAsString(book);
+		mockMvc.perform(post("/books").contentType(MediaType.APPLICATION_JSON_VALUE).content(json)).andExpect(status().isOk());
+	}
+	
+	@Test
+	void deleteBookTest() throws Exception {
+		when(bookService.deleteBook(1)).thenReturn(true);
+		mockMvc.perform(delete("/books/1").content("1")).andExpect(status().isOk());
+	}
+	
+	@Test
+	void deleteBookByInvalidBooIdTest() throws Exception {
+		when(bookService.deleteBook(1)).thenReturn(false);
+		mockMvc.perform(delete("/books/1").content("1asa")).andExpect(status().isNotFound());
+	}
+	
+	@Test
+	void updateBookTest() throws Exception {
+		BookDTO book = new BookDTO(1, "ajeet", "ajeet", "ajeet");
+		when(bookService.getBookByBookId(1)).thenReturn(book.getBook());
+		doNothing().when(bookService).validateBook(1,2);
+		when(	bookService.addBook(book.getBook())).thenReturn(book.getBook());
+		ObjectMapper objectMapper=new ObjectMapper();
+		String json=objectMapper.writeValueAsString(book);
+		mockMvc.perform(put("/books/1").contentType(MediaType.APPLICATION_JSON_VALUE).content(json)).andExpect(status().isOk());
+	}
+}

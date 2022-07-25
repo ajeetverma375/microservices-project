@@ -1,0 +1,61 @@
+package com.epam.libraryservice.service;
+
+import java.lang.StackWalker.Option;
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.epam.libraryservice.entity.BookEntity;
+import com.epam.libraryservice.entity.LibraryEntity;
+import com.epam.libraryservice.exceptions.NoBookIssuedException;
+import com.epam.libraryservice.exceptions.UserDoesNotExists;
+import com.epam.libraryservice.feign.BookFeignClient;
+import com.epam.libraryservice.feign.UserFeignClient;
+import com.epam.libraryservice.repository.LibraryRepository;
+
+@Service
+public class LibraryService {
+
+	@Autowired
+	LibraryRepository libraryRepository;
+	@Autowired
+	BookFeignClient bookFeignClient;
+	@Autowired
+	UserFeignClient userFeignClient;
+	@Autowired
+	FeignService feignService;
+	
+	public List<BookEntity> isseueBookToUser(String username, int bookId) {
+		userFeignClient.getUser(username);
+		bookFeignClient.getBook(bookId);
+		int numberOfBooksPerUser=getAllBookByUserName(username).size();
+		if(numberOfBooksPerUser>0 && numberOfBooksPerUser<3)
+		     libraryRepository.save(new LibraryEntity(username,bookId));
+		else
+			throw new BookCantBeIssuedException("you cant issue more than two books");
+		return null;
+	}
+	
+	public List<BookEntity> getAllBookByUserName(String username)
+	{
+		List<Integer> book = libraryRepository.finbyUsername(username);
+		return book.stream().map(bookId->feignService.getBookByBookId(bookId).getBody()).collect(Collectors.toList());
+	}
+	
+//	public LibraryEntity checkUser(String username)
+//	{
+//		Optional<LibraryEntity> user=libraryRepository.finbyUsername(username);
+//		if(user.isEmpty())
+//			throw new UserDoesNotExists("User does not exists");
+//		return user.get();
+//	}
+	
+	public BookEntity getBook(int  bookId)
+	{
+		
+	}
+
+}

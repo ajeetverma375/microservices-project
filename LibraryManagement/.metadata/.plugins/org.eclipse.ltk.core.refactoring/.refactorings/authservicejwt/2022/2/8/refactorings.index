@@ -1,0 +1,9 @@
+1645186161965	Delete elements
+1645186214130	Rename package 'com.epam.authservice.service'
+1645186227111	Rename package 'com.epam.authservice.exception'
+1645186237837	Rename package 'com.epam.authservice.model'
+1645186249393	Rename package 'com.epam.authservice.configuration'
+1645186258152	Rename package 'com.epam.authservice.controller'
+1645186272146	Rename package 'com.epam.authservice.repository'
+1645190395245	Delete element
+1645240294563	Rename method 'generateToken'

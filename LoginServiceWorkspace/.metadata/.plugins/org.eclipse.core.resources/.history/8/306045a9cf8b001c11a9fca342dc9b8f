@@ -1,0 +1,210 @@
+package com.epam.libraryservice;
+
+import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.mockito.stubbing.OngoingStubbing;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
+import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+
+import com.epam.libraryservice.entity.BookDTO;
+import com.epam.libraryservice.entity.BookEntity;
+import com.epam.libraryservice.entity.LibraryEntity;
+import com.epam.libraryservice.entity.UserDTO;
+import com.epam.libraryservice.entity.UserEntity;
+import com.epam.libraryservice.service.FeignService;
+import com.epam.libraryservice.service.LibraryService;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+@SpringBootTest
+@AutoConfigureMockMvc
+class LibraryControllerTest {
+
+	@MockBean
+	FeignService feignService;
+	@MockBean
+	LibraryService libraryService;
+	@Autowired
+	MockMvc mockMvc;
+
+	ObjectMapper objectMapper;
+	UserEntity userEntity;
+
+	@BeforeEach
+	public void setUp() {
+
+		userEntity = new UserEntity("Ajeet@123", "ajeet@gmail.com", "ajeet");
+		objectMapper = new ObjectMapper();
+
+	}
+
+	@Test
+	void addUserTest() throws Exception {
+		UserDTO user = new UserDTO("Ajeet@123", "ajeet@gmail.com", "ajeet");
+		ResponseEntity<UserDTO> userResponse = new ResponseEntity<>(user, HttpStatus.OK);
+		when(feignService.addUser(user)).thenReturn(userResponse);
+		ObjectMapper objectMapper = new ObjectMapper();
+		String json = objectMapper.writeValueAsString(user);
+		mockMvc.perform(post("/library/users").contentType(MediaType.APPLICATION_JSON_VALUE).content(json))
+				.andExpect(status().isOk());
+	}
+
+	@Test
+	void getAllUserTest() throws Exception {
+		List<UserDTO> userList = new ArrayList<>();
+		userList.add(new UserDTO("Ajeet@123", "ajeet@gmail.com", "ajeet"));
+		userList.add(new UserDTO("Akash@123", "Akash@gmail.com", "Akash"));
+		ResponseEntity<List<UserDTO>> reponse = new ResponseEntity<List<UserDTO>>(userList, HttpStatus.OK);
+		when(feignService.getAllUsers()).thenReturn(reponse);
+		mockMvc.perform(get("/library/users").contentType(MediaType.APPLICATION_JSON_VALUE)).andExpect(status().isOk());
+	}
+
+	@Test
+	void getUserByUserNameTest() throws Exception {
+		UserDTO user = new UserDTO("Ajeet@123", "ajeet@gmail.com", "ajeet");
+		ResponseEntity<UserDTO> reponse = new ResponseEntity<>(user, HttpStatus.OK);
+		when(feignService.getUserByUserName("Ajeet@123")).thenReturn(reponse);
+		mockMvc.perform(
+				get("/library/users/Ajeet@123").contentType(MediaType.APPLICATION_JSON_VALUE).content("Ajeet@123"))
+				.andExpect(status().isOk());
+	}
+
+	@Test
+	void deleteUserByUserNameTest() throws Exception {
+		ResponseEntity<String> reponse = new ResponseEntity<>("deleted successfully", HttpStatus.OK);
+		when(feignService.deleteUserByUserName("Ajeet@123")).thenReturn(reponse);
+		mockMvc.perform(
+				delete("/library/users/Ajeet@123").contentType(MediaType.APPLICATION_JSON_VALUE).content("Ajeet@123"))
+				.andExpect(status().isOk());
+	}
+
+	@Test
+	void updateUserByUserNameTest() throws Exception {
+		UserDTO user = new UserDTO("Ajeet@123", "ajeet@gmail.com", "ajeet");
+		UserDTO newUser = new UserDTO("Akash@123", "ajeet@gmail.com", "ajeet");
+		ResponseEntity<String> reponse = new ResponseEntity<>(user.toString(), HttpStatus.OK);
+		when(feignService.updateUser("Ajeet@123", user)).thenReturn(reponse);
+		ObjectMapper objectMapper = new ObjectMapper();
+		String json = objectMapper.writeValueAsString(newUser);
+		mockMvc.perform(put("/library/users/Ajeet@123").content("Ajeet@123")
+				.contentType(MediaType.APPLICATION_JSON_VALUE).content(json)).andExpect(status().isOk());
+	}
+
+	@Test
+	void addBookTest() throws Exception {
+		BookDTO book = new BookDTO(1, "ajeet", "ajeet", "ajeet");
+		ResponseEntity<BookEntity> reponse = new ResponseEntity<>(book.getBook(), HttpStatus.OK);
+		when(feignService.addBook(book)).thenReturn(reponse);
+		ObjectMapper objectMapper = new ObjectMapper();
+		String json = objectMapper.writeValueAsString(book);
+		mockMvc.perform(post("/library/books").contentType(MediaType.APPLICATION_JSON_VALUE).content(json))
+				.andExpect(status().isOk());
+	}
+
+	@Test
+	void getAllBooksTest() throws Exception {
+		List<BookEntity> bookList = new ArrayList<>();
+		bookList.add(new BookEntity(1, "ajeet", "ajeet", "ajeet"));
+		bookList.add(new BookEntity(2, "akash", "akash", "akash"));
+		ResponseEntity<List<BookEntity>> reponse = new ResponseEntity<List<BookEntity>>(bookList, HttpStatus.OK);
+		when(feignService.getAllBooks()).thenReturn(reponse);
+		mockMvc.perform(get("/library/books").contentType(MediaType.APPLICATION_JSON_VALUE)).andExpect(status().isOk());
+	}
+
+	@Test
+	void getBookByBookIdTest() throws Exception {
+		BookEntity book = new BookEntity(1, "ajeet", "ajeet", "ajeet");
+		ResponseEntity<BookEntity> reponse = new ResponseEntity<>(book, HttpStatus.OK);
+		when(feignService.getBookByBookId(1)).thenReturn(reponse);
+		mockMvc.perform(get("/library/books/1").contentType(MediaType.APPLICATION_JSON_VALUE).content("1"))
+				.andExpect(status().isOk());
+	}
+
+	@Test
+	void deleteBookByBookIdTest() throws Exception {
+		int bookId = 1;
+		ResponseEntity<String> reponse = new ResponseEntity<>("deleted successfully", HttpStatus.OK);
+		when(feignService.deleteBookByBookId(bookId)).thenReturn(reponse);
+		mockMvc.perform(delete("/library/books/1").contentType(MediaType.APPLICATION_JSON_VALUE).content("1"))
+				.andExpect(status().isOk());
+	}
+
+	@Test
+	void updateBookByBookIdTest() throws Exception {
+		BookDTO book = new BookDTO(1, "ajeet", "ajeet", "ajeet");
+		BookDTO newBook = new BookDTO(2, "akash", "ajeet", "ajeet");
+		ResponseEntity<String> reponse = new ResponseEntity<>(book.toString(), HttpStatus.OK);
+		when(feignService.updateBook(1, book)).thenReturn(reponse);
+		ObjectMapper objectMapper = new ObjectMapper();
+		String json = objectMapper.writeValueAsString(newBook);
+		mockMvc.perform(
+				put("/library/books/1").content("1").contentType(MediaType.APPLICATION_JSON_VALUE).content(json))
+				.andExpect(status().isOk());
+	}
+
+	@Test
+	void testGetAllLibraryRecord() throws Exception {
+		List<LibraryEntity> libraryList = new ArrayList<>();
+		libraryList.add(new LibraryEntity(1, "Ajeet@123", 3));
+		libraryList.add(new LibraryEntity(2, "Akash@123", 2));
+		when(libraryService.getAllRecords()).thenReturn(libraryList);
+		mockMvc.perform(get("/library")).andExpect(status().isOk());
+	}
+
+	@Test
+	void testGetLibraryRecordByBookId() throws Exception {
+		List<LibraryEntity> libraryList = new ArrayList<>();
+		libraryList.add(new LibraryEntity(1, "Ajeet@123", 3));
+		libraryList.add(new LibraryEntity(2, "Akash@123", 2));
+		when(libraryService.getAllRecords()).thenReturn(libraryList);
+		mockMvc.perform(get("/library")).andExpect(status().isOk());
+	}
+	
+	@GetMapping("/{username}")
+	public ResponseEntity<List<LibraryEntity>> getAllLibraryRecordsByUser(@PathVariable String username)
+	{ 
+		return new ResponseEntity<>(libraryService.getAllBookByUserName(username),HttpStatus.OK);
+	}
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,5 @@
+package com.epam.libraryservice.utility;
+
+public class Link {
+
+}

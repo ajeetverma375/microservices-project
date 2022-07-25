@@ -1,0 +1,41 @@
+package com.epam.libraryservice.feign;
+
+import java.util.List;
+
+import org.springframework.http.ResponseEntity;
+
+import com.epam.libraryservice.entity.UserDTO;
+
+public class UserFeignClientImpl implements UserFeignClient {
+
+	@Override
+	public ResponseEntity<UserDTO> addUser(UserDTO userDTO) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public ResponseEntity<List<UserDTO>> getAllUser() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public ResponseEntity<UserDTO> getUser(String username) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public ResponseEntity<String> deleteUser(String username) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public ResponseEntity<String> updateUser(String username, UserDTO userDTO) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+}

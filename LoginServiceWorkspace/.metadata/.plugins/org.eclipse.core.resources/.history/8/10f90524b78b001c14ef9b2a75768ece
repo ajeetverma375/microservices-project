@@ -1,0 +1,18 @@
+package com.epam.libraryservice;
+
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.beans.factory.annotation.Autowired;
+
+import com.epam.libraryservice.repository.LibraryRepository;
+import com.epam.libraryservice.service.LibraryService;
+
+@ExtendWith(MockitoExtension.class)
+public class LibraryServiceTest {
+
+	@Autowired
+	LibraryService libraryService;
+	@Autowired
+	LibraryRepository libraryRepository;
+
+}

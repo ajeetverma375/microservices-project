@@ -1,0 +1,8 @@
+package com.epam.libraryservice.feign;
+
+import org.springframework.cloud.openfeign.FeignClient;
+
+@FeignClient(url="localhost:8082/book_id" ,name="Book-Service")
+public interface BookFeignClient {
+
+}

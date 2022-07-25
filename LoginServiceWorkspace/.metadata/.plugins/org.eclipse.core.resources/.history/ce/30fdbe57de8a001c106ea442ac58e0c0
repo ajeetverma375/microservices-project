@@ -1,0 +1,5 @@
+package com.epam.libraryservice.exception;
+
+public class NoBookIssuedException extends Exception {
+
+}

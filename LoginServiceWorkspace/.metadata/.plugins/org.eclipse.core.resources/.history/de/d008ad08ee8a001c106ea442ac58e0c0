@@ -1,0 +1,5 @@
+package com.epam.libraryservice.exceptions;
+
+public class RecordAlreadyExistsException {
+
+}

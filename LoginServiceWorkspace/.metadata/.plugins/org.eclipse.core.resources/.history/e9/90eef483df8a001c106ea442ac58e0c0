@@ -1,0 +1,16 @@
+package com.epam.libraryservice.repository;
+
+import java.util.Optional;
+
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
+
+import com.epam.libraryservice.entity.LibraryEntity;
+
+@Repository
+public interface LibraryRepository extends JpaRepository<LibraryEntity, Integer> {
+
+	Optional<LibraryEntity> finbyUsername(String username);
+	
+
+}

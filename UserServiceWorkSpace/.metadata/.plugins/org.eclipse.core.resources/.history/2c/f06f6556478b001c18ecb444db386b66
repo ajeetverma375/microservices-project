@@ -1,0 +1,94 @@
+package com.epam.userservice;
+
+import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.doReturn;
+import static org.mockito.Mockito.when;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
+
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
+
+import com.epam.userservice.entity.UserEntity;
+import com.epam.userservice.exceptions.AccountAlreadyExistsException;
+import com.epam.userservice.repository.UserRepository;
+import com.epam.userservice.service.UserServcieImpl;
+
+@ExtendWith(MockitoExtension.class)
+@ExtendWith(SpringExtension.class)
+ class UserServiceTest {
+	@InjectMocks
+	UserServcieImpl userServcie;
+	@MockBean
+	UserRepository repository;
+	
+	@Test
+	 void addUserTest()
+	{
+		UserEntity user=new UserEntity("Ajeet@123","ajeet@gmail.com","ajeet");
+//		doReturn(Optional.of(user)).when(repository).findById("Akash@123");
+		when(repository.save(user)).thenReturn(user);
+		Assertions.assertEquals(user, userServcie.addUser(user));
+	}
+	
+	@Test
+	 void addUserAlreadtExistsTest()
+	{
+		UserEntity user=new UserEntity("Ajeet@123","ajeet@gmail.com","ajeet");
+		doReturn(Optional.of(user)).when(repository).findById("Ajeet@123");
+		when(repository.save(user)).thenReturn(user);
+		Assertions.assertThrows(AccountAlreadyExistsException.class,()->userServcie.addUser(user));
+	}
+	
+	@Test
+	 void getAllUserTest()
+	{
+		List<UserEntity> userList=new ArrayList<>();
+		userList.add(new UserEntity("Ajeet@123","ajeet@gmail.com","ajeet"));
+		userList.add(new UserEntity("Akash@123","Akash@gmail.com","Akash"));
+		when(repository.findAll()).thenReturn(userList);
+		Assertions.assertEquals(userList,userServcie.getAllUser());
+	}
+	
+	@Test
+	 void getUserByUserNameTest()
+	{  
+		UserEntity user=new UserEntity("Ajeet@123","ajeet@gmail.com","ajeet");
+		doReturn(Optional.of(user)).when(repository).findById("Ajeet@123");
+		Assertions.assertEquals(user,userServcie.getUserByUserName("Ajeet@123"));
+	}
+	
+	@Test
+	 void getUserByInvalidUserNameTest()
+	{  
+		UserEntity user=new UserEntity("Ajeet@123","ajeet@gmail.com","ajeet");
+		doReturn(Optional.of(user)).when(repository).findById("Akash@123");
+		Assertions.assertEquals(user,userServcie.getUserByUserName("Akash@123"));
+	}
+	
+	@Test
+	 void deleteUserByUserNameTest()
+	{  
+		UserEntity user=new UserEntity("Ajeet@123","ajeet@gmail.com","ajeet");
+		doReturn(Optional.of(user)).when(repository).findById("Ajeet@123");
+		doNothing().when(repository).deleteById("Ajeet@123");
+		Assertions.assertEquals(true,userServcie.deleteUser("Ajeet@123"));
+	}
+	
+	@Test
+	 void deleteUserByInvalidUserNameTest()
+	{  
+		UserEntity user=new UserEntity("Ajeet@123","ajeet@gmail.com","ajeet");
+		doReturn(Optional.of(user)).when(repository).findById("Akash@123");
+		doNothing().when(repository).deleteById("Akash@123");
+		Assertions.assertEquals(false,userServcie.deleteUser("Akash@123"));
+	}
+}

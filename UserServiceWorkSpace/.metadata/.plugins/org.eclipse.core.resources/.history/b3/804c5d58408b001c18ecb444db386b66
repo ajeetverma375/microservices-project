@@ -1,0 +1,93 @@
+package com.epam.userservice.controller;
+
+import java.util.List;
+
+import javax.validation.Valid;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.epam.userservice.entity.MessageEntity;
+import com.epam.userservice.entity.UserDTO;
+import com.epam.userservice.entity.UserEntity;
+import com.epam.userservice.service.UserServcieImpl;
+
+import antlr.debug.MessageEvent;
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
+@RestController
+@RequestMapping("users")
+public class UserController {
+
+	@Autowired
+	UserServcieImpl userService;
+
+	@PostMapping(value = "", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<UserEntity> addUser(@RequestBody @Valid UserDTO userDTO) {
+		log.info("Register controller started");
+		UserEntity user = new UserEntity(userDTO.getUserName(), userDTO.getEmail(), userDTO.getName());
+		UserEntity addUser = userService.addUser(user);
+		MessageEntity message=new MessageEntity("user added successfully");
+//		message.add(userService.getAllUserLink());
+		log.info("Register controller ended");
+		return new ResponseEntity<>(user, HttpStatus.OK);
+	}
+
+	@GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<List<UserEntity>> getAllUser() {
+		log.info("view all user controller started");
+		List<UserEntity> userList = userService.getAllUser();
+		userList.forEach(user -> user.add(userService.getSelfLink(user)));  //h
+		log.info("view all user controller ended");
+		return new ResponseEntity<>(userList, !userList.isEmpty() ? HttpStatus.OK : HttpStatus.NOT_FOUND);
+	}
+
+	@GetMapping(value = "/{username}", produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<UserEntity> getUser(@PathVariable String username) {
+		log.info("View User with specific user controller started");
+		UserEntity user = userService.getUserByUserName(username);     
+		user.add(userService.getSelfLink(user));                               //h
+		log.info("View User with specific user controller ended");
+		return new ResponseEntity<>(user, (user!=null) ? HttpStatus.OK : HttpStatus.NOT_FOUND);
+	}
+
+	@DeleteMapping("/{username}")
+	public ResponseEntity<String> deleteUser(@PathVariable String username) {
+		log.info("Delete User controller started");
+		boolean isDeleted = userService.deleteUser(username); 
+		return new ResponseEntity<>(isDeleted ? "User Deleted Successfully" : "No Record Found",	isDeleted ? HttpStatus.OK : HttpStatus.NOT_FOUND);
+//		 return personRepository .findById(id)  .map(
+//			            p -> {     personRepository.deleteById(id);
+//			              return ResponseEntity.noContent().build();
+//			            })
+//			        .orElseThrow(() -> new PersonNotFoundException(id));
+	}
+
+	@PutMapping("/{username}")
+	public ResponseEntity<String> updateUser(@PathVariable String username, @RequestBody @Valid UserDTO userDTO) {
+		log.info("Update controller started");
+		boolean isUpdated = false;
+		UserEntity user = null;
+		if (userService.getUserByUserName(username) != null) {
+			userService.validateUser(username, userDTO.getUserName());
+			user = userDTO.getUser();
+			userService.addUser(user);
+			isUpdated = true;
+		}
+		log.info("Update controller ended");
+		return new ResponseEntity<>(isUpdated ? user.toString() : "Record Does not exists",
+				isUpdated ? HttpStatus.OK : HttpStatus.NOT_FOUND);
+
+	}
+}

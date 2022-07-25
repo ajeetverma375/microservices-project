@@ -1,0 +1,91 @@
+package com.epam.userservice;
+
+import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.http.MediaType;
+import org.springframework.test.web.servlet.MockMvc;
+
+import com.epam.userservice.entity.UserDTO;
+import com.epam.userservice.entity.UserEntity;
+import com.epam.userservice.service.UserServcieImpl;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+@ExtendWith(MockitoExtension.class)
+public class UserControllerTest {
+	@MockBean
+	UserServcieImpl userService;
+	@Autowired
+	MockMvc mockMvc;
+	ObjectMapper objectMapper;
+	UserEntity userEntity;
+	List<UserEntity> userList=new ArrayList<>();
+
+	@BeforeEach
+	public void setUp() {
+		userEntity = new UserEntity("Ajeet@123","ajeet@gmail.com","ajeet");
+		objectMapper = new ObjectMapper();
+		userList.add(new UserEntity("Ajeet@123","ajeet@gmail.com","ajeet"));
+		userList.add(new UserEntity("Akash@123","Akash@gmail.com","Akash"));
+	}
+	
+	@Test
+	void getAllUserTest() throws Exception {
+		when(userService.getAllUser()).thenReturn(userList);
+		mockMvc.perform(get("/users").contentType(MediaType.APPLICATION_JSON_VALUE))
+				.andExpect(status().isOk());
+	}
+	
+
+	@Test
+	void getUserByUsernameTest() throws Exception {
+		when(userService.getUserByUserName("Ajeet@123")).thenReturn(userEntity);
+		mockMvc.perform(get("/users/Ajeet@123").content("Ajeet@123")).andExpect(status().isOk());
+	}
+	
+	@Test
+	void addUserTest() throws Exception {
+		UserDTO user = new UserDTO("Ajeet@123","ajeet@gmail.com","ajeet");
+		when(userService.addUser(user.getUser())).thenReturn(user.getUser());
+		ObjectMapper objectMapper=new ObjectMapper();
+		String json=objectMapper.writeValueAsString(user);
+		mockMvc.perform(post("/users").contentType(MediaType.APPLICATION_JSON_VALUE).content(json)).andExpect(status().isOk());
+	}
+	
+	@Test
+	void deleteBookTest() throws Exception {
+		when(userService.deleteUser("Ajeet@123")).thenReturn(true);
+		mockMvc.perform(delete("/users/1").content("Ajeet@123")).andExpect(status().isOk());
+	}
+	
+	@Test
+	void deleteBookByInvalidBooIdTest() throws Exception {
+		when(userService.deleteUser("abc")).thenReturn(false);
+		mockMvc.perform(delete("/users/Ajeet@123").content("abc")).andExpect(status().isNotFound());
+	}
+	
+	@Test
+	void updateBookTest() throws Exception {
+		UserDTO user = new UserDTO("Ajeet@123","ajeet@gmail.com","ajeet");
+		when(userService.getUserByUserName("Ajeet@123")).thenReturn(user.getUser());
+		doNothing().when(userService).validateUser("Ajeet@123","Akash@123");
+		when(	userService.addUser(user.getUser())).thenReturn(user.getUser());
+		ObjectMapper objectMapper=new ObjectMapper();
+		String json=objectMapper.writeValueAsString(user);
+		mockMvc.perform(put("/users/Ajeet@123").contentType(MediaType.APPLICATION_JSON_VALUE).content(json)).andExpect(status().isOk());
+	}
+}

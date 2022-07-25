@@ -1,0 +1,47 @@
+
+p	java:S106"9Replace this use of System.out or System.err by a logger.(©¼ ÿûÿÿÿÿ8ÕÜ†»ğ/HıRMAJORZ
+CODE_SMELL
+p	java:S106"9Replace this use of System.out or System.err by a logger.(ƒşÄ¸üÿÿÿÿ8ÑıÕ»ğ/HRMAJORZ
+CODE_SMELL
+Z
+java:S1172"(Remove this unused method parameter "o".(µ†û8ÕÜ†»ğ/HûRMAJORZ
+CODE_SMELL
+x	java:S101"MRename this class name to match the regular expression '^[A-Z][a-zA-Z0-9]*$'.(³ÜÌüHøRMINORZ
+CODE_SMELL
+k	java:S106"9Replace this use of System.out or System.err by a logger.(‡¢á’8ÑıÕ»ğ/H–RMAJORZ
+CODE_SMELL
+n	java:S125"<This block of commented-out lines of code should be removed.(±å™8ÑıÕ»ğ/H•RMAJORZ
+CODE_SMELL
+c
+java:S1172"+Remove this unused method parameter "args".(ÿ£÷Üıÿÿÿÿ8èäÁ»ğ/H‡RMAJORZ
+CODE_SMELL
+a
+java:S1481 ")Remove this unused "flag" local variable.(ŸÿáÑÿÿÿÿÿ8ÑıÕ»ğ/H™RMINORZ
+CODE_SMELL
+q
+java:S3518""CMake sure this expression can't be zero before doing this division.(ûºú8ÑıÕ»ğ/HRCRITICALZBUG
+ƒ	java:S114"QRename this interface name to match the regular expression '^[A-Z][a-zA-Z0-9]*$'.(§¢”˜8¦„Êğ/H¬RMINORZ
+CODE_SMELL
+k	java:S106"9Replace this use of System.out or System.err by a logger.(úö¨â8èäÁ»ğ/HRMAJORZ
+CODE_SMELL
+k	java:S106"9Replace this use of System.out or System.err by a logger.(úö¨â8ÑıÕ»ğ/H˜RMAJORZ
+CODE_SMELL
+g
+java:S1854""5Remove this useless assignment to local variable "a".(ûºú8ÑıÕ»ğ/H—RMAJORZ
+CODE_SMELL
+`
+java:S1172"(Remove this unused method parameter "s".(¸ææ›şÿÿÿÿ8èäÁ»ğ/H‰RMAJORZ
+CODE_SMELL
+X
+java:S1481""&Remove this unused "a" local variable.(ûºú8ÑıÕ»ğ/H›RMINORZ
+CODE_SMELL
+c
+java:S1172"+Remove this unused method parameter "args".(×­Éêşÿÿÿÿ8èäÁ»ğ/HŒRMAJORZ
+CODE_SMELL
+i
+java:S1135-"2Complete the task associated to this TODO comment.(» æÿÿÿÿÿ8¦„Êğ/HªRINFOZ
+CODE_SMELL
+ˆ	java:S114"QRename this interface name to match the regular expression '^[A-Z][a-zA-Z0-9]*$'.(ò«¦ôúÿÿÿÿ8¦„Êğ/H«RMINORZ
+CODE_SMELL
+k	java:S106&"9Replace this use of System.out or System.err by a logger.(ÑÆœö8èäÁ»ğ/H‹RMAJORZ
+CODE_SMELL

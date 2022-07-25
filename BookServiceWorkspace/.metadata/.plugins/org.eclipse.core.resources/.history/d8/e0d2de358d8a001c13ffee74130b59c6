@@ -1,0 +1,82 @@
+package com.epam.bookservice.controller;
+
+import java.util.List;
+
+import javax.validation.Valid;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.epam.bookservice.entity.BookDTO;
+import com.epam.bookservice.entity.BookEntity;
+import com.epam.bookservice.service.BookService;
+
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
+@RestController
+@RequestMapping("book_id")
+public class BookController {
+
+	@Autowired
+	BookService bookService;
+
+	@PostMapping("")
+	public ResponseEntity<BookEntity> addBook(@RequestBody @Valid BookDTO bookDTO) {
+		log.info("Register controller started");
+		System.out.println(bookDTO.toString());
+		BookEntity book = new BookEntity(bookDTO.getId(), bookDTO.getPublisher(), bookDTO.getAuthor(),
+				bookDTO.getName());
+		BookEntity addBook = bookService.addBook(book);
+		log.info("Register controller ended");
+		return new ResponseEntity<>(addBook, HttpStatus.OK);
+	}
+
+	@GetMapping("")
+	public ResponseEntity<List<BookEntity>> getAllBook() {
+		log.info("view all user controller started");
+		List<BookEntity> bookList = bookService.getAllBook();
+		log.info("view all user controller ended");
+		return new ResponseEntity<>(bookList, bookList.isEmpty() ? HttpStatus.OK : HttpStatus.NOT_FOUND);
+	}
+
+	@GetMapping("/{bookId}")
+	public ResponseEntity<BookEntity> getBook(@PathVariable int bookId) {
+		log.info("View Book with specific Book name controller started");
+		BookEntity user = bookService.getBookByBookId(bookId);
+		log.info("View Book with specific Book name controller ended");
+		return new ResponseEntity<>(user, user != null ? HttpStatus.OK : HttpStatus.NOT_FOUND);
+	}
+
+	@DeleteMapping("/{bookId}")
+	public ResponseEntity<String> deleteBook(@PathVariable int bookId) {
+		log.info("Delete Book controller started");
+		boolean isDeleted = bookService.deleteBook(bookId);
+		return new ResponseEntity<>(isDeleted ? "Book Deleted Successfully" : "No Record Found",isDeleted ? HttpStatus.OK : HttpStatus.NOT_FOUND);
+	}
+
+	@PutMapping("/{bookId}")
+	public ResponseEntity<String> updateBook(@PathVariable int bookId, @RequestBody @Valid BookDTO bookDTO) {
+		log.info("Update controller started");
+		boolean isUpdated = false;
+		BookEntity book = null;
+		if (bookService.getBookByBookId(bookId) != null) {
+			bookService.validateBook(bookId, bookDTO.getId());
+			book = bookDTO.getBook();
+			bookService.addBook(book);
+			isUpdated = true;
+		}
+		log.info("Update controller ended");
+		return new ResponseEntity<>(isUpdated ? book.toString() : "Record Does not exists",
+				isUpdated ? HttpStatus.OK : HttpStatus.NOT_FOUND);
+	}
+}

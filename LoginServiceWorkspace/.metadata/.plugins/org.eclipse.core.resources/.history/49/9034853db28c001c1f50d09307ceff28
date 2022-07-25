@@ -1,0 +1,27 @@
+package com.epam.libraryservice.entity;
+
+import org.springframework.hateoas.RepresentationModel;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
+public class UserDTO extends RepresentationModel<UserDTO>{
+	
+	private String userName;
+	private String email;
+	private String name;
+	
+//	@JsonIgnore
+//	public UserEntity getUser()
+//	{
+//		return new UserEntity(this.userName,this.email,this.name);
+//	}
+
+}

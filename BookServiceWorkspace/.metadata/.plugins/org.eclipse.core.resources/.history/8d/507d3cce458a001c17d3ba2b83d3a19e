@@ -1,0 +1,64 @@
+package com.epam.bookservice;
+
+import static org.mockito.Mockito.when;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
+
+import com.epam.bookservice.entity.BookEntity;
+import com.epam.bookservice.repository.BookRepository;
+import com.epam.bookservice.service.BookServcieImpl;
+
+@ExtendWith(MockitoExtension.class)
+@ExtendWith(SpringExtension.class)
+public class BookServiceTest {
+
+	@MockBean
+	BookRepository bookRepository;
+	@InjectMocks
+	BookServcieImpl bookService;
+	
+	BookEntity book;
+	List<BookEntity> bookList=new ArrayList<>();
+	@BeforeEach
+	public void setUp() {
+		book = new BookEntity(1, "ajeet", "ajeet", "ajeet");
+		bookList.add(new BookEntity(1, "ajeet", "ajeet", "ajeet"));
+		bookList.add(new BookEntity(2, "akash", "akash", "akash"));
+	}
+		
+	@Test
+	void TestaddBook()
+	{
+		when(bookRepository.save(book)).thenReturn(book);
+		Assertions.assertEquals(book, bookService.addBook(book));
+	}
+	
+	@Test
+	void getAllBookTest()
+	{
+	 when(bookRepository.findAll()).thenReturn(bookList);
+		Assertions.assertEquals(bookList, bookService.getAllBook());
+	}
+	
+	@Test
+	void getBookByBookIdTest()
+	{
+		when(bookRepository.findById(1)).thenReturn(null);
+		Assertions.assertEquals(bookRepository.findById(1).get(), bookService.getBookByBookId(1));
+	}
+
+}
+
+
+
+

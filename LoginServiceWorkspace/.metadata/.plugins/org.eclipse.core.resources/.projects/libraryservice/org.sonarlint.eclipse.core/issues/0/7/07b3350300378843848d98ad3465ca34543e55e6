@@ -1,0 +1,40 @@
+
+‘
+java:S1488="_Immediately return this expression instead of assigning it to the temporary variable "allBook".(¶×õe8á”¸£î/Hš!RMINORZ
+CODE_SMELL
+
+java:S1488B"\Immediately return this expression instead of assigning it to the temporary variable "book".(°•öœ8Ò¿Ì£î/H”!RMINORZ
+CODE_SMELL
+m	java:S125"<This block of commented-out lines of code should be removed.(ü¦Œ<8Ïûì–ï/Hª!RMAJORZ
+CODE_SMELL
+”
+java:S1488("\Immediately return this expression instead of assigning it to the temporary variable "user".(šĞÁøÿÿÿÿ8ï´ë–ï/H¯!RMINORZ
+CODE_SMELL
+•
+java:S14883"bImmediately return this expression instead of assigning it to the temporary variable "updateUser".(ÓâŞ8„†ç–ï/H—!RMINORZ
+CODE_SMELL
+”
+java:S1488G"bImmediately return this expression instead of assigning it to the temporary variable "deleteBook".(ˆ˜ŠN8¯‘Ğ£î/H!RMINORZ
+CODE_SMELL
+n	java:S125)"<This block of commented-out lines of code should be removed.(Áƒ­õ8ï´ë–ï/H¦!RMAJORZ
+CODE_SMELL
+’
+java:S1488""_Immediately return this expression instead of assigning it to the temporary variable "allUser".(íŞ8ï´ë–ï/H§!RMINORZ
+CODE_SMELL
+”
+java:S1488L"bImmediately return this expression instead of assigning it to the temporary variable "updateBook".(ŸŠ‡Q8Ãæá¤î/H£!RMINORZ
+CODE_SMELL
+—
+java:S1488"_Immediately return this expression instead of assigning it to the temporary variable "addUser".(Œô¥Òÿÿÿÿÿ8§‹Ó•ï/H¬!RMINORZ
+CODE_SMELL
+s	java:S125#"<This block of commented-out lines of code should be removed.(™÷‹øÿÿÿÿ8ï´ë–ï/H«!RMAJORZ
+CODE_SMELL
+p
+java:S1128"=Remove this unused import 'org.springframework.hateoas.Link'.(ò‘¶Ä8ìªì–ï/Hµ!RMINORZ
+CODE_SMELL
+•
+java:S1488."bImmediately return this expression instead of assigning it to the temporary variable "deleteUser".(†…Ş©8š¿×Ÿî/H²!RMINORZ
+CODE_SMELL
+—
+java:S14888"_Immediately return this expression instead of assigning it to the temporary variable "addBook".(®ş“”ıÿÿÿÿ8¬è£î/H !RMINORZ
+CODE_SMELL

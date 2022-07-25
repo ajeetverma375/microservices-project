@@ -1,0 +1,19 @@
+package com.epam.libraryservice.repository;
+
+import java.util.List;
+
+import javax.transaction.Transactional;
+
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
+
+import com.epam.libraryservice.entity.LibraryEntity;
+
+@Transactional
+@Repository
+public interface LibraryRepository extends JpaRepository<LibraryEntity, Integer> {
+
+	List<Integer> finByUername(String username);
+	
+
+}

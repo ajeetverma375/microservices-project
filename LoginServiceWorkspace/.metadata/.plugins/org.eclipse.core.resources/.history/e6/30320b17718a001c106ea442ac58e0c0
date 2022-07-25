@@ -1,0 +1,8 @@
+package com.epam.libraryservice;
+
+public class Snippet {
+	public static void main(String[] args) {
+		com.epam
+	}
+}
+

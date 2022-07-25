@@ -1,0 +1,9 @@
+
+g	java:S125"<This block of commented-out lines of code should be removed.(˜®ôîH°RMAJORZ
+CODE_SMELL
+l
+java:S1854."9Remove this useless assignment to local variable "value".(´‘Ø°8‘şŸ´ò/HıRMAJORZ
+CODE_SMELL
+]
+java:S1481."*Remove this unused "value" local variable.(´‘Ø°8‘şŸ´ò/HşRMINORZ
+CODE_SMELL

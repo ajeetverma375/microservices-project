@@ -1,0 +1,12 @@
+package com.epam.libraryservice.utility;
+
+import com.epam.libraryservice.entity.UserDTO;
+
+public class Link {
+
+	public Link getUserSelfLink(UserDTO user)
+	{
+		return webmvclink
+	}
+	
+}

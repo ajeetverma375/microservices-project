@@ -1,0 +1,51 @@
+package com.epam.libraryservice;
+
+import static org.mockito.Mockito.when;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
+
+import com.epam.libraryservice.entity.UserDTO;
+import com.epam.libraryservice.feign.BookFeignClient;
+import com.epam.libraryservice.feign.UserFeignClient;
+import com.epam.libraryservice.service.FeignService;
+
+@ExtendWith(MockitoExtension.class)
+@ExtendWith(SpringExtension.class)
+ class FeignServiceTest {
+
+	@InjectMocks
+	FeignService feignService;
+	@MockBean
+	UserFeignClient userFeignClient;
+	@MockBean
+	BookFeignClient bookFeignClient;
+	
+	@Test
+	void addUser() {
+		UserDTO user = new UserDTO("Ajeet@123", "ajeet@gmail.com", "ajeet");
+		ResponseEntity<UserDTO> userResponse = new ResponseEntity<>(user, HttpStatus.OK);
+		when(userFeignClient.addUser(user)).thenReturn(userResponse);
+		Assertions.assertEquals(userResponse, feignService.addUser(user));
+	}
+	
+	@Test
+	void getAllUsers() {
+		List<UserDTO> userList = new ArrayList<>();
+		userList.add(new UserDTO("Ajeet@123", "ajeet@gmail.com", "ajeet"));
+		userList.add(new UserDTO("Akash@123", "Akash@gmail.com", "Akash"));
+		ResponseEntity<List<UserDTO>> reponse = new ResponseEntity<List<UserDTO>>(userList, HttpStatus.OK);
+		when(userFeignClient.getAllUser()).thenReturn(reponse);
+		Assertions.assertEquals(userList, feignService.getAllUsers());
+	}
+}

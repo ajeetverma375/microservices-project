@@ -1,0 +1,31 @@
+package com.epam.userservice;
+
+import static org.mockito.Mockito.when;
+
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.boot.test.mock.mockito.MockBean;
+
+import com.epam.userservice.entity.UserEntity;
+import com.epam.userservice.repository.UserRepository;
+import com.epam.userservice.service.UserServcieImpl;
+
+@ExtendWith(MockitoExtension.class)
+public class UserServiceTest {
+	@InjectMocks
+	UserServcieImpl userServcie;
+	@MockBean
+	UserRepository repository;
+	
+	
+	public void addUserTest()
+	{
+		UserEntity user=new UserEntity("Ajeet@123","ajeet@gmail.com","ajeet");
+		when(repository.save(user)).thenReturn(user);
+		Assertions.assertEquals(user, userServcie.addUser(user));
+	}
+	
+
+}

@@ -1,0 +1,38 @@
+package com.epam.libraryservice;
+
+import static org.mockito.Mockito.when;
+
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.boot.test.mock.mockito.MockBean;
+
+import com.epam.libraryservice.feign.BookFeignClient;
+import com.epam.libraryservice.feign.UserFeignClient;
+import com.epam.libraryservice.repository.LibraryRepository;
+import com.epam.libraryservice.service.FeignService;
+import com.epam.libraryservice.service.LibraryService;
+
+@ExtendWith(MockitoExtension.class)
+public class LibraryServiceTest {
+
+	@InjectMocks
+	LibraryService libraryService;
+	@MockBean
+	LibraryRepository libraryRepository;
+	@MockBean
+	BookFeignClient bookFeignClient;
+	@MockBean
+	UserFeignClient userFeignClient;
+	@MockBean
+	FeignService feignService;
+
+	@Test
+	void testIssueBookToUser()
+	{String userame="Ajeet@123";
+	int bookId=1;
+		when()
+	}
+
+}

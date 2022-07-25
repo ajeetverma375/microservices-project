@@ -1,0 +1,66 @@
+package com.epam.bookservice.service;
+
+import java.util.List;
+import java.util.Optional;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.epam.bookservice.entity.BookEntity;
+import com.epam.bookservice.exceptions.BookAlreadyExistsException;
+import com.epam.bookservice.exceptions.BookDoesNotExists;
+import com.epam.bookservice.repository.BookRepository;
+
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
+@Service
+public class BookServcieImpl implements BookService {
+
+	@Autowired
+	BookRepository bookRepository;
+
+	@Override
+	public BookEntity addBook(BookEntity newBook) {
+		log.info("Create Service started");
+		System.out.println(newBook.toString());
+		Optional<BookEntity> book = bookRepository.findById(newBook.getId());
+		if (book.isPresent()) {
+			throw new BookAlreadyExistsException("Book Already exists with Book Name " + newBook.getName());
+		}
+		bookRepository.save(newBook);
+		log.info("Create Service ended");
+		return newBook;
+	}
+
+	@Override
+	public List<BookEntity> getAllBook() {
+		return bookRepository.findAll();
+	}
+
+	@Override
+	public BookEntity getBookByBookId(int bookId) {
+		Optional<BookEntity> book = bookRepository.findById(bookId);
+		if (!book.isPresent()) {
+			throw new BookDoesNotExists("Book Does not exists");
+		}
+		return book.get();
+	}
+
+	@Override
+	public boolean deleteBook(int bookId) {
+		boolean isDeleted = false;
+		if (bookRepository.findById(bookId).isPresent()) {
+			bookRepository.deleteById(bookId);
+			isDeleted = true;
+		}
+		return isDeleted;
+	}
+
+	@Override
+	public void validateBook(int existingId, int newId) {
+		if ((existingId!= newId) && bookRepository.findById(newId).isPresent())
+			throw new BookAlreadyExistsException("The book you trying to change already exists. please try different Id");
+		deleteBook(existingId);
+	}
+}

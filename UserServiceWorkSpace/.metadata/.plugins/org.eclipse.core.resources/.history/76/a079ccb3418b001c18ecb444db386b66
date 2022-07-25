@@ -1,0 +1,45 @@
+package com.epam.userservice;
+
+import static org.mockito.Mockito.doReturn;
+import static org.mockito.Mockito.when;
+
+import java.util.Optional;
+
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
+
+import com.epam.userservice.entity.UserEntity;
+import com.epam.userservice.repository.UserRepository;
+import com.epam.userservice.service.UserServcieImpl;
+
+@ExtendWith(MockitoExtension.class)
+@ExtendWith(SpringExtension.class)
+ class UserServiceTest {
+	@InjectMocks
+	UserServcieImpl userServcie;
+	@MockBean
+	UserRepository repository;
+	
+	@Test
+	 void addUserTest()
+	{
+		UserEntity user=new UserEntity("Ajeet@123","ajeet@gmail.com","ajeet");
+//		doReturn(Optional.of(user)).when(repository).findById("Akash@123");
+		when(repository.save(user)).thenReturn(user);
+		Assertions.assertEquals(user, userServcie.addUser(user));
+	}
+	
+	@Test
+	 void addUserAlreadtExistsTest()
+	{
+		UserEntity user=new UserEntity("Ajeet@123","ajeet@gmail.com","ajeet");
+		doReturn(Optional.of(user)).when(repository).findById("Akash@123");
+		when(repository.save(user)).thenReturn(user);
+		Assertions.assertEquals(user, userServcie.addUser(user));
+	}
+}

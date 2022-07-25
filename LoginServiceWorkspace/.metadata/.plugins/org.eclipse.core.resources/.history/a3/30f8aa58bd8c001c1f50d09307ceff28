@@ -1,0 +1,82 @@
+package com.epam.libraryservice.service;
+
+import java.util.List;
+
+import javax.validation.Valid;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Service;
+
+import com.epam.libraryservice.entity.BookDTO;
+import com.epam.libraryservice.entity.BookEntity;
+import com.epam.libraryservice.entity.MessageEntity;
+import com.epam.libraryservice.entity.UserDTO;
+import com.epam.libraryservice.feign.BookFeignClient;
+import com.epam.libraryservice.feign.UserFeignClient;
+import com.epam.libraryservice.utility.Link;
+
+@Service
+public class FeignService {
+
+	@Autowired
+	UserFeignClient userFeignClient;
+	@Autowired
+	BookFeignClient bookFeignClient;
+	@Autowired
+	Link link;
+
+	public ResponseEntity<UserDTO> addUser(UserDTO userDTO) {
+		ResponseEntity<UserDTO> addUser = userFeignClient.addUser(userDTO);
+		return addUser;
+	}
+	
+	public ResponseEntity<List<UserDTO>> getAllUsers() {
+		ResponseEntity<List<UserDTO>> allUser = userFeignClient.getAllUser();
+	if(allUser.getBody()!=null)
+		 allUser.getBody().forEach(user->user.add(link.getUserSelfLink(user)));
+		return allUser;
+	}
+
+	public ResponseEntity<UserDTO> getUserByUserName(String username) {
+		ResponseEntity<UserDTO> user = userFeignClient.getUser(username);
+		return user;
+	}
+
+	public ResponseEntity<String> deleteUserByUserName(String username) {
+		ResponseEntity<String> deleteUser = userFeignClient.deleteUser(username);
+		return deleteUser;
+	}
+
+	public ResponseEntity<String> updateUser(String username, UserDTO userDTO) {
+           ResponseEntity<String> updateUser = userFeignClient.updateUser(username, userDTO);
+		return updateUser;
+	}
+
+	public ResponseEntity<BookEntity> addBook(@Valid BookDTO bookDTO) {
+	ResponseEntity<BookEntity> addBook = bookFeignClient.addBook(bookDTO);
+		return addBook;
+	}
+
+	public ResponseEntity<List<BookEntity>> getAllBooks() {
+		ResponseEntity<List<BookEntity>> allBook = bookFeignClient.getAllBook();
+		return allBook;
+	}
+
+	public ResponseEntity<BookEntity> getBookByBookId(int bookId) {
+		ResponseEntity<BookEntity> book = bookFeignClient.getBook(bookId);
+		return book;
+	}
+
+	public ResponseEntity<String> deleteBookByBookId(int bookId) {
+		ResponseEntity<String> deleteBook = bookFeignClient.deleteBook(bookId);
+		return deleteBook;
+	}
+
+	public ResponseEntity<String> updateBook(int bookId, @Valid BookDTO bookDTO) {
+		ResponseEntity<String> updateBook = bookFeignClient.updateBook(bookId, bookDTO);
+		return updateBook;
+	}
+
+
+}

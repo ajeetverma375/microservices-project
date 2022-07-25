@@ -1,0 +1,33 @@
+package com.epam.libraryservice.feign;
+
+import java.util.List;
+
+import org.springframework.cloud.openfeign.FeignClient;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+
+import com.epam.libraryservice.entity.UserDTO;
+
+@FeignClient(url="localhost:8081/users" ,name="User-Service")
+public interface UserFeignClient {
+	
+	@PostMapping("")
+	public ResponseEntity<UserDTO> addUser(@RequestBody  UserDTO userDTO);
+	
+	@GetMapping()
+	public ResponseEntity<List<UserDTO>> getAllUser();
+	
+	@GetMapping("/{username}")
+	public ResponseEntity<UserDTO> getUser(@PathVariable String username);
+	
+	@DeleteMapping("/{username}")
+	public ResponseEntity<String> deleteUser(@PathVariable String username);
+	
+	@PutMapping("/{username}")
+	public ResponseEntity<String> updateUser(@PathVariable String username, @RequestBody UserDTO userDTO);
+}
