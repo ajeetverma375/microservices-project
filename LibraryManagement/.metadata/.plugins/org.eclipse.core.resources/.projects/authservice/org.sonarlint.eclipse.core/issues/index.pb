@@ -9,3 +9,11 @@ i
 9src/main/java/com/epam/authservice/configuration/abc.java,0\d\0d16326b4d35d7f420e319a863baf654ff3edfb3
 n
 >src/main/java/com/epam/authservice/AuthserviceApplication.java,8\1\81892f762557c35543c715d87219840af2fc5b9a
+q
+Asrc/main/java/com/epam/authservice/service/UserDetailService.java,a\6\a608a7502adc04104860910860af500f44751a84
+q
+Asrc/main/java/com/epam/authservice/repository/UserRepository.java,4\f\4fd743b38e7809a4f33e4757e56608a2f87f5f28
+q
+Asrc/main/java/com/epam/authservice/controller/UserController.java,4\6\469cb3ef4cf4f69a8c578810633f5adb227f84d3
+Y
+)src/main/resources/application.properties,0\6\06f65155ec73600b9fc5c4dc2883d4bb84d8e284

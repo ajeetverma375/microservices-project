@@ -27,3 +27,7 @@ u
 Esrc/main/java/com/epam/libraryservice/entity/TokenResponseEntity.java,e\f\efb56383b7dcc486a1c768b696a2266d09256d2b
 p
 @src/main/java/com/epam/libraryservice/feign/BookFeignClient.java,4\5\45359dd4c4cc6ac105a01dac88fba55385104f73
+g
+7src/main/java/com/epam/libraryservice/utility/Link.java,9\6\96110f2a5df052d7ea0bc069a83f362b22000db5
+v
+Fsrc/main/java/com/epam/libraryservice/configuration/SwaggerConfig.java,c\4\c4564ed401c79b8921bba1384ecdc44c9875771c

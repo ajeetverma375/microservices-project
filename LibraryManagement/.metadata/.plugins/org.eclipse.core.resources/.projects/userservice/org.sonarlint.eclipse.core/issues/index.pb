@@ -13,3 +13,9 @@ Y
 )src/main/resources/application.properties,0\6\06f65155ec73600b9fc5c4dc2883d4bb84d8e284
 7
 pom.xml,4\4\442292b8a7efeabbe4cc176709b833b1792140ec
+y
+Isrc/main/java/com/epam/userservice/exceptions/CustomExceptionHandler.java,4\d\4d74344098874cc0a93cad8937eec56816c6533d
+j
+:src/test/java/com/epam/userservice/UserControllerTest.java,0\c\0cca60636fab3773e7af9704dfb9e59ca86de92d
+s
+Csrc/main/java/com/epam/userservice/configuration/SwaggerConfig.java,d\4\d43e1edbbbfdff0e8b7aedba981802af5a4fbabf
